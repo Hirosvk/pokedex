@@ -9,27 +9,23 @@ const PokemonForm = React.createClass({
 
   _onChange(e) {
     const stateName = e.target.attributes.label.value;
-
     const stateObj = function() {
       let returnObj = {};
       returnObj[stateName] = e.target.value;
       return returnObj;
     }();
-
     this.setState( stateObj );
-
-    console.log(this.state);
   },
 
   createPokemon(e) {
     e.preventDefault();
 
-    let data = this.state;
-    data["moves"] = [];
-    data.moves.push(this.state.move1);
-    data.moves.push(this.state.move2);
+    let newPoke = this.state;
+    newPoke["moves"] = [this.state.move1, this.state.move2];
+    delete newPoke.move1;
+    delete newPoke.move2;
 
-    PokemonActions.createPokemon( {"pokemon": data}, (id) => {
+    PokemonActions.createPokemon( {"pokemon": newPoke}, (id) => {
       hashHistory.push(`/pokemon/${id}`);
     });
   },
@@ -37,33 +33,40 @@ const PokemonForm = React.createClass({
   render() {
     return (
       <form className="new-pokemon" onSubmit={this.createPokemon}>
-        <label for="pokemon_name">Name:</label>
-          <input type="text" onChange={this._onChange} value={this.state.name} label="name" key="name" id="pokemon_name"></input>
+        <label>Name:
+          <input type="text" onChange={this._onChange} value={this.state.name} label="name" key="name"/>
+        </label>
           <br/>
-        <label for="image_url">Image URL:</label>
-          <input type="text" onChange={this._onChange} value={this.state.image_url} label="image_url" key="image_url" id="image_url"></input>
+        <label>Image URL:
+          <input type="text" onChange={this._onChange} value={this.state.image_url} label="image_url" key="image_url"/>
+        </label>
           <br/>
-        <label for="pokemon_poke_type">Type:</label>
-          <select onChange={this._onChange} label="pokemon_poke_type" key="poke_type" id="poke_type">
+        <label>Type:
+          <select onChange={this._onChange} label="poke_type" key="poke_type">
             {
               window.pokemonTypes.map( type => {
                 return <option value={type} key={type}>{type}</option>;
                 })
               }
             </select>
+          </label>
             <br/>
 
-        <label for="attack">Attack:</label>
-          <input type="number" onChange={this._onChange} value={this.state.attack} label="attack" key="attack" id="attack"></input>
+        <label>Attack:
+          <input type="number" onChange={this._onChange} value={this.state.attack} label="attack" key="attack"/>
+        </label>
           <br/>
-        <label for="defense">Defense:</label>
-          <input type="number" onChange={this._onChange} value={this.state.defense} label="defense" key="defense" id="defense"></input>
+        <label>Defense:
+          <input type="number" onChange={this._onChange} value={this.state.defense} label="defense" key="defense"/>
+        </label>
           <br/>
-        <label for="move1">Move #1:</label>
-          <input type="text" onChange={this._onChange} value={this.state.move1} label="move1" key="move1" id="move1"></input>
+        <label>Move #1:
+          <input type="text" onChange={this._onChange} value={this.state.move1} label="move1" key="move1" />
+        </label>
           <br/>
-        <label for="move2">Move #2:</label>
-          <input type="text" onChange={this._onChange} value={this.state.move2} label="move2" key="move2" id="move2"></input>
+        <label>Move #2:
+          <input type="text" onChange={this._onChange} value={this.state.move2} label="move2" key="move2" />
+        </label>
           <br/>
 
         <button type="submit" value="Create Pokemon">Create Pokemon</button>

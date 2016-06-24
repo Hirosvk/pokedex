@@ -15,7 +15,6 @@ const PokemonActions = {
   },
 
   fetchPokemon(id) {
-    console.log("fetchPokemon(id) in pokemon_actions.js");
     ApiUtil.fetchPokemon(id, this.receiveSinglePokemon);
   },
 
